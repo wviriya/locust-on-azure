@@ -14,8 +14,8 @@ HOST="https://jsonplaceholder.typicode.com"
 TEST_CLIENTS=1
 USERS_PER_CLIENT=1
 HATCH_RATE=1
-RESOURCE_GROUP=""
-AZURE_STORAGE_ACCOUNT=""
+RESOURCE_GROUP="locustio-rg"
+AZURE_STORAGE_ACCOUNT="azninjalocustiotest"
 EOF
 	echo "Enviroment file not detected."
 	echo "Please configure values for your environment in the created .env file"
@@ -49,7 +49,7 @@ az storage file upload-batch --destination locust --source locust/ --connection-
     -o json >> log.txt
 
 echo "deploying locust ($TEST_CLIENTS clients)..." | tee -a log.txt
-LOCUST_MONITOR=$(az group deployment create -g $RESOURCE_GROUP \
+LOCUST_MONITOR=$(az deployment group create -g $RESOURCE_GROUP \
 	--template-file locust-arm-template.json \
 	--parameters \
 		host=$HOST \
